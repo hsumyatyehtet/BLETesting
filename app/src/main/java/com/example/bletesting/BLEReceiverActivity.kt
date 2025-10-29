@@ -67,6 +67,7 @@ class BLEReceiverActivity: AppCompatActivity() {
         permissionLauncher.launch(permissions.toTypedArray())
     }
 
+    @RequiresPermission(Manifest.permission.BLUETOOTH_SCAN)
     private fun startScan() {
 
         val bluetoothAdapter = BluetoothAdapter.getDefaultAdapter()

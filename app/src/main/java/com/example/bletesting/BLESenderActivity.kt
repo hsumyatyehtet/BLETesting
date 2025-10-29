@@ -33,6 +33,7 @@ class BLESenderActivity : AppCompatActivity() {
     private val permissionLauncher = registerForActivityResult(
         ActivityResultContracts.RequestMultiplePermissions()
     ) { result ->
+
         if (result.values.all { it }) startAdvertising()
         else Toast.makeText(this, "Permissions denied", Toast.LENGTH_SHORT).show()
     }
