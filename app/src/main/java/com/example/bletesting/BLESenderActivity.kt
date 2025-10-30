@@ -83,6 +83,7 @@ class BLESenderActivity : AppCompatActivity() {
 
         val data = AdvertiseData.Builder()
             .addServiceUuid(ParcelUuid(SharedConstants.SERVICE_UUID))
+          //  .addManufacturerData(1,SharedConstants.ADVERTISING_MESSAGE.toByteArray(StandardCharsets.UTF_8))
             .addServiceData(
                 ParcelUuid(SharedConstants.SERVICE_UUID),
                 SharedConstants.ADVERTISING_MESSAGE.toByteArray(StandardCharsets.UTF_8)

@@ -11,6 +11,7 @@ import android.bluetooth.le.ScanResult
 import android.bluetooth.le.ScanSettings
 import android.content.Context
 import android.content.pm.PackageManager
+import android.net.wifi.aware.Characteristics
 import android.os.Build
 import android.os.Bundle
 import android.os.ParcelUuid
@@ -23,6 +24,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresPermission
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import androidx.core.util.forEach
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import java.nio.charset.StandardCharsets
@@ -87,12 +89,28 @@ class BLEReceiverActivity: AppCompatActivity() {
 
     private val scanCallback = object : ScanCallback() {
         override fun onScanResult(callbackType: Int, result: ScanResult) {
+
+            // get service data code
             val serviceData = result.scanRecord?.getServiceData(ParcelUuid(SharedConstants.SERVICE_UUID))
             serviceData?.let {
                 val message = String(serviceData, StandardCharsets.UTF_8)
                 txtStatus.text = "Received: $message"
                 Log.d("BLE_RECEIVER", "Received Data: $message")
             }
+
+
+//            val scanRecord = result.scanRecord ?: return
+//            val manufacturerDataMap = scanRecord.manufacturerSpecificData
+//            for (i in 0 until manufacturerDataMap.size()) {
+//                val manufacturerId = manufacturerDataMap.keyAt(i)
+//                val data = manufacturerDataMap.valueAt(i)
+//
+//              val message =  data.toString(Charsets.UTF_8)
+//
+//                txtStatus.text = "Received: $message"
+//                Log.d("BLE_RECEIVER", "Manufacturer ID: 0x${manufacturerId.toString(16)}, Message: $message")
+//            }
+
         }
     }
 
