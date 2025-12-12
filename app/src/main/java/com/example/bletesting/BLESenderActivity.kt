@@ -63,7 +63,39 @@ class BLESenderActivity : AppCompatActivity() {
         permissionLauncher.launch(permissions.toTypedArray())
     }
 
-    @RequiresPermission(Manifest.permission.BLUETOOTH_CONNECT)
+    private fun startAdvertising(){
+        val bluetoothAdapter = BluetoothAdapter.getDefaultAdapter()
+        val advertiser = bluetoothAdapter.bluetoothLeAdvertiser ?: return
+
+        val settings = AdvertiseSettings.Builder()
+            .setAdvertiseMode(AdvertiseSettings.ADVERTISE_MODE_LOW_LATENCY)
+            .setConnectable(false)
+            .setTxPowerLevel(AdvertiseSettings.ADVERTISE_TX_POWER_HIGH)
+            .build()
+
+        val manufacturerId = 0x1234 // Any 16-bit number you choose
+        val data = AdvertiseData.Builder()
+            .addManufacturerData(manufacturerId, SharedConstants.ADVERTISING_MESSAGE.toByteArray(Charsets.UTF_8))
+            .setIncludeDeviceName(true)
+            .build()
+
+        advertiser.startAdvertising(settings, data, advertiseCallback)
+    }
+
+    private val advertiseCallback = object : AdvertiseCallback() {
+        override fun onStartSuccess(settingsInEffect: AdvertiseSettings) {
+          //  Log.d("BLE_ADVERTISER", "Advertising started successfully")
+            Toast.makeText(this@BLESenderActivity, "Advertising started successfully ✅", Toast.LENGTH_SHORT).show()
+        }
+
+        override fun onStartFailure(errorCode: Int) {
+          //  Log.e("BLE_ADVERTISER", "Advertising failed: $errorCode")
+            Toast.makeText(this@BLESenderActivity, "Advertising failed: Code: $errorCode", Toast.LENGTH_LONG).show()
+        }
+    }
+
+    //using UUID
+ /*   @RequiresPermission(Manifest.permission.BLUETOOTH_CONNECT)
     private fun startAdvertising() {
 
         val bluetoothAdapter = BluetoothAdapter.getDefaultAdapter()
@@ -106,7 +138,6 @@ class BLESenderActivity : AppCompatActivity() {
             super.onStartFailure(errorCode)
             Toast.makeText(this@BLESenderActivity, "Advertising Failed ❌ Code: $errorCode", Toast.LENGTH_LONG).show()
         }
-    }
-
+    }*/
 
 }
